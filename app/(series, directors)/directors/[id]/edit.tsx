@@ -3,32 +3,30 @@ import { useEffect, useState } from 'react';
 import { TextInput, StyleSheet, Button, Text } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSession } from '../../../../contexts/AuthContext';
-import { SerieType } from '../../../../types/index.d';
+import { DirectorType } from '../../../../types/index.d';
 
 export default function Page() {
   const { session, isLoading } = useSession();
-  const [serie, setSerie] = useState<any>(null);
+  const [director, setDirector] = useState<any>(null);
   const [error, setError] = useState("");
   const { id } = useLocalSearchParams();
   const router = useRouter();
 
-  const [form, setForm] = useState<SerieType>({
-    title: "",
-    description: "",
-    directors: "",
-    release_year: "",
-    rating: ""
+  const [form, setForm] = useState<DirectorType>({
+    full_name: "",
+    email: "",
+    series: ""
   });
 
   useEffect(() => {
-    axios.get(`https://ca1-series-api-app.vercel.app/api/series/${id}`, {
+    axios.get(`https://ca1-series-api-app.vercel.app/api/directors/${id}`, {
       headers: {
         Authorization: `Bearer ${session}`
       }
     })
         .then(response => {
           console.log(response.data);
-          setSerie(response.data);
+          setDirector(response.data);
           setForm(response.data);
         })
         .catch(e => {
@@ -39,7 +37,7 @@ export default function Page() {
 
   if(isLoading) return <Text>Loading...</Text>;
 
-  if(!serie) return <Text>{error}</Text>;
+  if(!director) return <Text>{error}</Text>;
 
 
   const handleChange = (e: any) => {
@@ -52,28 +50,28 @@ export default function Page() {
     const handleClick = () => {
         console.log(form);
 
-        axios.put(`http://localhost:3001/api/series/${id}`, form, {
+        axios.put(`https://ca1-directors-api-app.vercel.app/api/directors/${id}`, form, {
             headers: {
                 Authorization: `Bearer ${session}`
             }
         })
              .then(response => {
                 console.log(response.data);
-                router.push(`/series/${id}`);  
+                router.push(`/directors/${id}`);  
              })
              .catch(e => {
                 console.error(e);
                 setError(e.response.data.message);
              });
 
-        // axios.put(`https://series-api.vercel.app/api/series/${id}`, form, {
+        // axios.put(`https://directors-api.vercel.app/api/directors/${id}`, form, {
         //     headers: {
         //         Authorization: `Bearer ${session}`
         //     }
         // })
         //     .then(response => {
         //         console.log(response.data);
-        //         setSerie(response.data);
+        //         setDirector(response.data);
         //     })
         //     .catch(e => {
         //         console.error(e);
@@ -83,49 +81,31 @@ export default function Page() {
 
   return (
     <>
-        <Text>Title</Text>
+        <Text>Full Name</Text>
         <TextInput 
             style={styles.input}
-            placeholder='Title'
+            placeholder='Full Name'
             onChange={handleChange}
-            value={form.title}
-            id="title"
+            value={form.full_name}
+            id="full_name"
         />
 
-        <Text>Description</Text>
+        <Text>Email</Text>
         <TextInput 
             style={styles.input}
-            placeholder='Description'
+            placeholder='Email'
             onChange={handleChange}
-            value={form.description}
-            id="description"
+            value={form.email}
+            id="email"
         />
 
-        <Text>Directors</Text>
+        <Text>Series</Text>
         <TextInput 
             style={styles.input}
-            placeholder='Directors'
+            placeholder='Series'
             onChange={handleChange}
-            value={form.directors}
-            id="directors"
-        />
-
-        <Text>Release Year</Text>
-        <TextInput 
-            style={styles.input}
-            placeholder='Release Year'
-            onChange={handleChange}
-            value={form.release_year}
-            id="release_year"
-        />
-
-        <Text>Rating</Text>
-        <TextInput 
-            style={styles.input}
-            placeholder='Rating'
-            onChange={handleChange}
-            value={form.rating}
-            id="rating"
+            value={form.series}
+            id="series"
         />
 
         <Text>{error}</Text>

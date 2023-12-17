@@ -17,3 +17,9 @@ export interface SerieType {
     release_year: string;
     rating: string;
 }
+
+export interface DirectorType {
+    full_name: string;
+    email: string;
+    series: string;
+}

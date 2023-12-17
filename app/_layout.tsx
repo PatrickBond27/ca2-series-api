@@ -13,10 +13,17 @@ export default function Layout() {
                 }}
             />
             <Drawer.Screen 
-                name='(auth)'
+                name='(series)'
                 options={{
                     drawerLabel: "Series",
                     title: "Series"
+                }}
+            />
+            <Drawer.Screen 
+                name='(directors)'
+                options={{
+                    drawerLabel: "Directors",
+                    title: "Directors"
                 }}
             />
         </Drawer>

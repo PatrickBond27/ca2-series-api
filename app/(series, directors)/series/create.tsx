@@ -15,7 +15,7 @@ export default function Page() {
     description: "",
     directors: "",
     release_year: "",
-    rating: ""
+    rating: "",
   });
 
   if(isLoading) return <Text>Loading...</Text>;

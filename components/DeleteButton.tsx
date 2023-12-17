@@ -34,7 +34,7 @@ export default function DeleteButton({resource, id, deleteCallback}: MyProps) {
     };
 
     return (
-        <Button title={(deleting) ? "Deleting..." : "Delete"} onPress={handleDelete} color="ff000" />
+        <Button title={(deleting) ? "Deleting..." : "Delete"} onPress={handleDelete} color="#ff0000" />
     );
 
 }

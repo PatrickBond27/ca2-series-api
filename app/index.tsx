@@ -18,6 +18,9 @@ export default function Page() {
         <Link href={'/series'} asChild>
           <Button title='All series' />
         </Link>
+        <Link href={'/directors'} asChild>
+          <Button title='All directors' />
+        </Link>
         <Text>You are logged in</Text>
         <Button onPress={signOut} title='Logout' />
       </>
