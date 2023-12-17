@@ -33,14 +33,20 @@ export default function SerieItem({serie, onDelete}: MyProps){
             <Link href={{
                 pathname: '/series/[id]',
                 params: { id: serie._id }
-            }}>
+            }} style={styles.title} >
                 {serie.title}
             </Link>
-            <Text>{serie.description}</Text>
-            <Text>{serie.release_year}</Text>
-            <Button title="Create" onPress={() => router.push('/series/create')} />
-            <Button title="Edit" onPress={() => router.push(`/series/${serie._id}/edit`)} />
+            <Text style={styles.description} >{serie.description}</Text>
+            <Text style={styles.yearTitle} >{serie.release_year}</Text>
+            <View style={styles.createButton} >
+            <Button title="Create" onPress={() => router.push('/series/create')} color='#287b28' />
+            </View>
+            <View style={styles.editButton} >
+            <Button title="Edit" onPress={() => router.push(`/series/${serie._id}/edit`)} color='#FFA500' />
+            </View>
+            <View style={styles.editButton} >
             <DeleteButton resource="series" id={serie._id} deleteCallback={onDelete} />
+            </View>
         </View>
     );
 }
@@ -50,14 +56,43 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 200,
       resizeMode: 'cover',
-      borderRadius: 8,
       marginBottom: 8,
     },
     imagePlaceholder: {
         width: '100%',
         height: 200,
         backgroundColor: '#ccc', // Placeholder background color
-        borderRadius: 8,
         marginBottom: 8,
+    },
+    editButton: {
+        backgroundColor: '#FFA500', // Orange background color for 'edit' button
+        width: 160, // Make 'edit' button more narrow
+        marginBottom: 10, // Add margin spacing
+    },
+    createButton: {
+        backgroundColor: '#287b28', // Dark Green background color for 'edit' button
+        width: 160, // Make 'edit' button more narrow
+        marginBottom: 10, // Add margin spacing
+    },
+    deleteButton: {
+        width: 160, // Make 'edit' button more narrow
+        marginBottom: 10, // Add margin spacing
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#000000', // Black text color
+        marginBottom: 10,
+    },
+    yearTitle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#000000', // Black text color
+        marginBottom: 10,
+    },
+    description: {
+        fontSize: 15,
+        color: '#000000', // Black text color
+        marginBottom: 10,
     },
   });

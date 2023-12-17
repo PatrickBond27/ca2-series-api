@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
 import { useSession } from '../../../../contexts/AuthContext';
 
 export default function Page() {
@@ -12,7 +12,7 @@ export default function Page() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({ title:"Series" });
+    navigation.setOptions({ title:"Serie" });
   }, [navigation]);
 
   useEffect(() => {
@@ -40,10 +40,10 @@ export default function Page() {
     <>
         <Text>{serie.title}</Text>
         <Text>{serie.description}</Text>
-        <Text>{serie.directors}</Text>
+        <Text>ID of directors: {serie.directors}</Text>
         <Text>{serie.release_year}</Text>
         <Text>{serie.rating}</Text>
-        <Text>{serie.title}</Text>
+        <Text>{serie.image}</Text>
         <Text>{error}</Text>
     </>
   );

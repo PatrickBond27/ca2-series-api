@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
 import { useSession } from '../../../../contexts/AuthContext';
 
 export default function Page() {
@@ -9,6 +9,11 @@ export default function Page() {
   const [director, setDirector] = useState<any>(null);
   const [error, setError] = useState("");
   const { id } = useLocalSearchParams();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({ title:"Director" });
+  }, [navigation]);
 
   useEffect(() => {
     axios.get(`https://ca1-series-api-app.vercel.app/api/directors/${id}`, {
@@ -33,7 +38,9 @@ export default function Page() {
 
   return (
     <>
-        <Text>{director.title}</Text>
+        <Text>{director.full_name}</Text>
+        <Text>ID of series: {director.series}</Text>
+        <Text>{director.email}</Text>
         <Text>{error}</Text>
     </>
   );

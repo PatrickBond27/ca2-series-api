@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TextInput, StyleSheet, Button, Text } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
 import { useSession } from '../../../../contexts/AuthContext';
 import { DirectorType } from '../../../../types/index.d';
 
@@ -11,12 +11,17 @@ export default function Page() {
   const [error, setError] = useState("");
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const navigation = useNavigation();
 
   const [form, setForm] = useState<DirectorType>({
     full_name: "",
     email: "",
     series: ""
   });
+  
+  useEffect(() => {
+    navigation.setOptions({ title:"Edit" });
+  }, [navigation]);
 
   useEffect(() => {
     axios.get(`https://ca1-series-api-app.vercel.app/api/directors/${id}`, {

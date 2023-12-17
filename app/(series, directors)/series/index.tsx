@@ -54,13 +54,13 @@ export default function Page() {
   return (
     <FlatList
         data={rowData}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item: rows }) => (
             <View style={styles.row}>
               {rows.map(item => (
-              <View style={styles.card} key={item._id}>
-                  <SerieItem serie={item} onDelete={onDelete} />
-              </View>
+                <View style={styles.card} key={item._id}>
+                    <SerieItem serie={item} onDelete={onDelete} />
+                </View>
               ))}
             </View>
         )} horizontal={false} // Set for horizontal scrolling
@@ -118,10 +118,10 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       padding: 16,
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#001F3F', // Dark navy background
   },
   card: {
-      backgroundColor: '#fff',
+      backgroundColor: '#e4e6eb',
       borderRadius: 8,
       padding: 16,
       marginRight: 16,
@@ -150,5 +150,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#ccc', // Placeholder background color
       borderRadius: 8,
       marginBottom: 8,
+  },
+  createButton: {
+    backgroundColor: '#287b28', // Dark Green background color for 'edit' button
+    width: 200, // Make 'edit' button more narrow
+    marginBottom: 40, // Add margin spacing
   },
 });

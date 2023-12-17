@@ -8,8 +8,8 @@ export default function Layout() {
             <Drawer.Screen 
                 name='index'
                 options={{
-                    drawerLabel: "Home",
-                    title: "Home"
+                    drawerLabel: "SeriesBoxd",
+                    title: "SeriesBoxd"
                 }}
             />
             <Drawer.Screen 

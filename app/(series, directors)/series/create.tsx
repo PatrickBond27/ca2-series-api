@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, StyleSheet, Button, Text } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useNavigation } from 'expo-router';
 import { useSession } from '../../../contexts/AuthContext';
 import { SerieType } from '../../../types/index.d';
 
@@ -9,14 +9,19 @@ export default function Page() {
   const { session, isLoading } = useSession();
   const [error, setError] = useState("");
   const router = useRouter();
+  const navigation = useNavigation();
 
   const [form, setForm] = useState<SerieType>({
-    title: "",
-    description: "",
-    directors: "",
-    release_year: "",
-    rating: "",
-  });
+      title: "",
+      description: "",
+      directors: "",
+      release_year: "",
+      rating: "",
+    });
+    
+    useEffect(() => {
+      navigation.setOptions({ title:"Series" });
+    }, [navigation]);
 
   if(isLoading) return <Text>Loading...</Text>;
 
