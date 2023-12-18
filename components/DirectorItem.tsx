@@ -27,11 +27,11 @@ export default function DirectorItem({director, onDelete}: MyProps){
             <Text style={styles.description} >{director.description}</Text>
             <Text style={styles.email} >{director.email}</Text>
             <Text style={styles.series} >{director.series}</Text>
-            <View style={styles.createButton} >
+            {/* <View style={styles.createButton} >
             <Button title="Create" onPress={() => router.push('/series/create')} color='#287b28' />
-            </View>
+            </View> */}
             <View style={styles.editButton} >
-            <Button title="Edit" onPress={() => router.push(`/directors/${director._id}/edit`)} style={styles.editButton} />
+            <Button title="Edit" onPress={() => router.push(`/directors/${director._id}/edit`)} color='#FFA500' />
             </View>
             <View style={styles.deleteButton} >
             <DeleteButton resource="directors" id={director._id} deleteCallback={onDelete} />

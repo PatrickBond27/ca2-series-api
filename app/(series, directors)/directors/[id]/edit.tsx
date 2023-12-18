@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TextInput, StyleSheet, Button, Text } from 'react-native';
 import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
+import { ImagePickerResult, launchImageLibraryAsync } from 'expo-image-picker';
 import { useSession } from '../../../../contexts/AuthContext';
 import { DirectorType } from '../../../../types/index.d';
 
@@ -20,7 +21,7 @@ export default function Page() {
   });
   
   useEffect(() => {
-    navigation.setOptions({ title:"Edit" });
+    navigation.setOptions({ title:"Edit Director" });
   }, [navigation]);
 
   useEffect(() => {

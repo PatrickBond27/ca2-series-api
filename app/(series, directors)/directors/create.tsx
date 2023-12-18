@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { TextInput, StyleSheet, Button, Text } from 'react-native';
 import { useRouter, useNavigation } from 'expo-router';
+import { ImagePickerResult, launchImageLibraryAsync } from 'expo-image-picker';
 import { useSession } from '../../../contexts/AuthContext';
 import { DirectorType } from '../../../types/index.d';
 

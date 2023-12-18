@@ -16,6 +16,7 @@ export interface SerieType {
     directors: string;
     release_year: string;
     rating: string;
+    image?: any;
 }
 
 export interface DirectorType {

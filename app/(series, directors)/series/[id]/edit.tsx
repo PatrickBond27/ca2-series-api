@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { TextInput, StyleSheet, Button, Text } from 'react-native';
+import { TextInput, StyleSheet, Button, Text, Image } from 'react-native';
 import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '../../../../contexts/AuthContext';
 import { SerieType } from '../../../../types/index.d';
 
@@ -12,17 +13,49 @@ export default function Page() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const navigation = useNavigation();
+  const [image, setImage] = useState<string | null>(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        let uri = result.assets[0].uri;
+        setImage(uri);
+        // let uri = result.assets[0].uri;
+        // uri = uri.replace("file://", "");
+        // const parts = uri.split("/");
+        // setImage(uri);
+        // const fileName = parts[parts.length - 1];
+
+        // setImagePath(fileName);
+        // const fileName = uri.split('/').pop();
+
+        // console.log('image', image);
+
+        // setSelectedImage(result.uri);
+        // setForm(prevState => ({
+        //     ...prevState,
+        //     image: result.uri,
+        // }));
+    }
+  };
 
   const [form, setForm] = useState<SerieType>({
     title: "",
     description: "",
     directors: "",
     release_year: "",
-    rating: ""
+    rating: "",
+    image: null,
   });
 
   useEffect(() => {
-    navigation.setOptions({ title:"Edit" });
+    navigation.setOptions({ title:"Edit Serie" });
   }, [navigation]);
 
   useEffect(() => {
@@ -132,6 +165,10 @@ export default function Page() {
             value={form.rating}
             id="rating"
         />
+
+        <Text>Image</Text>
+        <Button title="Pick an image for the series" onPress={pickImage} />
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
 
         <Text>{error}</Text>
         

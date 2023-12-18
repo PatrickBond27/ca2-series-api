@@ -8,7 +8,7 @@ interface MyProps {
         title: string;
         description: string;
         directors: string;
-        image: any;
+        image?: any;
         release_year: number;
         rating: string;
     };
