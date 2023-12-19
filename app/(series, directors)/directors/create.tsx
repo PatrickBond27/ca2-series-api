@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { TextInput, StyleSheet, Button, Text } from 'react-native';
+import { TextInput, StyleSheet, Button, Text, View, ScrollView } from 'react-native';
 import { useRouter, useNavigation } from 'expo-router';
 import { ImagePickerResult, launchImageLibraryAsync } from 'expo-image-picker';
 import { useSession } from '../../../contexts/AuthContext';
@@ -50,8 +50,9 @@ export default function Page() {
     };
 
   return (
-    <>
-        <Text>Full Name</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.inputTitle}>Full Name</Text>
         <TextInput 
             style={styles.input}
             placeholder='Full Name'
@@ -60,7 +61,7 @@ export default function Page() {
             id="full_name"
         />
 
-        <Text>Email</Text>
+        <Text style={styles.inputTitle}>Email</Text>
         <TextInput 
             style={styles.input}
             placeholder='Email'
@@ -69,7 +70,7 @@ export default function Page() {
             id="email"
         />
 
-        <Text>Series</Text>
+        <Text style={styles.inputTitle}>Series</Text>
         <TextInput 
             style={styles.input}
             placeholder='Series'
@@ -85,16 +86,44 @@ export default function Page() {
             title="Submit"
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
+            style={styles.submitButton}
         />
-    </>
+    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#001f3f', // Dark Navy
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    margin: 16,
+    width: '80%',
+  },
+  inputTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  submitButton: {
+    marginVertical: 8,
+    width: '40%', // Adjust the width as needed
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 8,
+  },
+});

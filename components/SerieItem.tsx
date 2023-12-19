@@ -44,7 +44,7 @@ export default function SerieItem({serie, onDelete}: MyProps){
             <View style={styles.editButton} >
             <Button title="Edit" onPress={() => router.push(`/series/${serie._id}/edit`)} color='#FFA500' />
             </View>
-            <View style={styles.editButton} >
+            <View style={styles.deleteButton} >
             <DeleteButton resource="series" id={serie._id} deleteCallback={onDelete} />
             </View>
         </View>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { TextInput, StyleSheet, Button, Text } from 'react-native';
+import { TextInput, StyleSheet, Button, Text, View, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
 import { ImagePickerResult, launchImageLibraryAsync } from 'expo-image-picker';
 import { useSession } from '../../../../contexts/AuthContext';
@@ -17,11 +17,11 @@ export default function Page() {
   const [form, setForm] = useState<DirectorType>({
     full_name: "",
     email: "",
-    series: ""
+    series: "",
   });
   
   useEffect(() => {
-    navigation.setOptions({ title:"Edit Director" });
+    navigation.setOptions({ title: "Edit Director" });
   }, [navigation]);
 
   useEffect(() => {
@@ -46,6 +46,13 @@ export default function Page() {
   if(!director) return <Text>{error}</Text>;
 
 
+  // const handleChange = (id: keyof SerieType, value: string) => {
+  //   setForm((prevState) => ({
+  //     ...prevState,
+  //     [id]: value,
+  //   }));
+  // };
+
   const handleChange = (e: any) => {
         setForm(prevState => ({
             ...prevState,
@@ -53,17 +60,17 @@ export default function Page() {
         }));
     };
 
-    const handleClick = () => {
+    const handleClick = async () => {
         console.log(form);
 
-        axios.put(`https://ca1-directors-api-app.vercel.app/api/directors/${id}`, form, {
+        axios.put(`https://ca1-series-api-app.vercel.app/api/directors/${id}`, form, {
             headers: {
                 Authorization: `Bearer ${session}`
             }
         })
              .then(response => {
                 console.log(response.data);
-                router.push(`/directors/${id}`);  
+                router.push(`/directors/${id}`);
              })
              .catch(e => {
                 console.error(e);
@@ -86,8 +93,9 @@ export default function Page() {
     };
 
   return (
-    <>
-        <Text>Full Name</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.inputTitle}>Full Name</Text>
         <TextInput 
             style={styles.input}
             placeholder='Full Name'
@@ -96,7 +104,7 @@ export default function Page() {
             id="full_name"
         />
 
-        <Text>Email</Text>
+        <Text style={styles.inputTitle}>Email</Text>
         <TextInput 
             style={styles.input}
             placeholder='Email'
@@ -105,7 +113,7 @@ export default function Page() {
             id="email"
         />
 
-        <Text>Series</Text>
+        <Text style={styles.inputTitle}>Series</Text>
         <TextInput 
             style={styles.input}
             placeholder='Series'
@@ -116,21 +124,51 @@ export default function Page() {
 
         <Text>{error}</Text>
         
+        <View style={styles.submitButton}>
         <Button
             onPress={handleClick}
             title="Submit"
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
         />
-    </>
+        </View>
+    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#001f3f', // Dark Navy
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    margin: 16,
+    width: '80%',
+  },
+  inputTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 8,
+  },
+  submitButton: {
+    marginVertical: 8,
+    width: '40%', // Adjust the width as needed
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 8,
+  },
+});

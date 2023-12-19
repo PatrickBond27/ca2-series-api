@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { TextInput, StyleSheet, Button, Text, Image } from 'react-native';
+import { TextInput, StyleSheet, Button, Text, Image, View, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '../../../../contexts/AuthContext';
@@ -55,7 +55,7 @@ export default function Page() {
   });
 
   useEffect(() => {
-    navigation.setOptions({ title:"Edit Serie" });
+    navigation.setOptions({ title: "Edit Serie" });
   }, [navigation]);
 
   useEffect(() => {
@@ -80,113 +80,190 @@ export default function Page() {
   if(!serie) return <Text>{error}</Text>;
 
 
-  const handleChange = (e: any) => {
-        setForm(prevState => ({
-            ...prevState,
-            [e.target.id]: e.target.value
-        }));
-    };
+  const handleChange = (id: keyof SerieType, value: string) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
 
-    const handleClick = () => {
-        console.log(form);
+  // const handleChange = (e: any) => {
+  //       setForm(prevState => ({
+  //           ...prevState,
+  //           [e.target.id]: e.target.value
+  //       }));
+  //   };
 
-        axios.put(`https://ca1-series-api-app.vercel.app/api/series/${id}`, form, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        })
-             .then(response => {
-                console.log(response.data);
-                router.push(`/series/${id}`);  
-             })
-             .catch(e => {
-                console.error(e);
-                setError(e.response.data.message);
-             });
+  const handleClick = async () => {
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (key === 'image' && value) {
+          // If 'image' is present and not null, append it as a file
+          formData.append(key, {
+            uri: value,
+            name: 'image.jpg', // You may want to use a more descriptive name
+            type: 'image/jpg', // Adjust the type based on the image type
+          });
+        } else {
+          formData.append(key, value);
+        }
+      });
 
-        // axios.put(`https://series-api.vercel.app/api/series/${id}`, form, {
-        //     headers: {
-        //         Authorization: `Bearer ${session}`
-        //     }
-        // })
-        //     .then(response => {
-        //         console.log(response.data);
-        //         setSerie(response.data);
-        //     })
-        //     .catch(e => {
-        //         console.error(e);
-        //         setError(e.response.data.message);
-        //     });
-    };
+      const response = await axios.put( `https://ca1-series-api-app.vercel.app/api/series/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${session}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+      router.push(`/series/${id}`);
+    } catch (e) {
+      console.error(e);
+      setError(e.response?.data?.message || 'An error occurred!');
+    }
+  };
+
+    // const handleClick = () => {
+    //     console.log(form);
+
+    //     axios.put(`https://ca1-series-api-app.vercel.app/api/series/${id}`, form, {
+    //         headers: {
+    //             Authorization: `Bearer ${session}`
+    //         }
+    //     })
+    //          .then(response => {
+    //             console.log(response.data);
+    //             router.push(`/series/${id}`);  
+    //          })
+    //          .catch(e => {
+    //             console.error(e);
+    //             setError(e.response.data.message);
+    //          });
+
+    //     // axios.put(`https://series-api.vercel.app/api/series/${id}`, form, {
+    //     //     headers: {
+    //     //         Authorization: `Bearer ${session}`
+    //     //     }
+    //     // })
+    //     //     .then(response => {
+    //     //         console.log(response.data);
+    //     //         setSerie(response.data);
+    //     //     })
+    //     //     .catch(e => {
+    //     //         console.error(e);
+    //     //         setError(e.response.data.message);
+    //     //     });
+    // };
 
   return (
-    <>
-        <Text>Title</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.inputTitle}>Title</Text>
         <TextInput 
             style={styles.input}
             placeholder='Title'
-            onChange={handleChange}
+            onChangeText={(text) => handleChange("title", text)}
             value={form.title}
             id="title"
         />
 
-        <Text>Description</Text>
+        <Text style={styles.inputTitle}>Description</Text>
         <TextInput 
             style={styles.input}
             placeholder='Description'
-            onChange={handleChange}
+            onChangeText={(text) => handleChange("description", text)}
             value={form.description}
             id="description"
         />
 
-        <Text>Directors</Text>
+        <Text style={styles.inputTitle}>Directors</Text>
         <TextInput 
             style={styles.input}
             placeholder='Directors'
-            onChange={handleChange}
+            onChangeText={(text) => handleChange("directors", text)}
             value={form.directors}
             id="directors"
         />
 
-        <Text>Release Year</Text>
+        <Text style={styles.inputTitle}>Release Year</Text>
         <TextInput 
             style={styles.input}
             placeholder='Release Year'
-            onChange={handleChange}
+            onChangeText={(text) => handleChange("release_year", text)}
             value={form.release_year}
             id="release_year"
         />
 
-        <Text>Rating</Text>
+        <Text style={styles.inputTitle}>Rating</Text>
         <TextInput 
             style={styles.input}
             placeholder='Rating'
-            onChange={handleChange}
+            onChangeText={(text) => handleChange("rating", text)}
             value={form.rating}
             id="rating"
         />
 
-        <Text>Image</Text>
+        <Text style={styles.inputTitle}>Image</Text>
+        <View style={styles.imageButton}>
         <Button title="Pick an image for the series" onPress={pickImage} />
+        </View>
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
 
         <Text>{error}</Text>
         
+        <View style={styles.submitButton}>
         <Button
             onPress={handleClick}
             title="Submit"
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
         />
-    </>
+        </View>
+    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#001f3f', // Dark Navy
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    margin: 16,
+    width: '80%',
+  },
+  inputTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 8,
+  },
+  imageButton: {
+    // backgroundColor: '#287b28', // Dark Green
+    marginVertical: 8,
+    width: '40%', // Adjust the width as needed
+  },
+  submitButton: {
+    marginVertical: 8,
+    width: '40%', // Adjust the width as needed
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 8,
+  },
+});
